@@ -179,8 +179,13 @@ void Font::init( const char *newName, void *pFileData, int fileDataLen, int tall
 		FontPlat_Bitmap *bitmap = FontPlat_Bitmap::Create( name, &stream );
 
 		if( bitmap )
-		{
 			impl = bitmap;
+		else
+			impl = FontPlat_CreateFromMemory( name, pFileData, fileDataLen,
+				tall, wide, rotation, weight, italic, underline, strikeout, symbol );
+
+		if( impl )
+		{
 			staticFontPlatDar.addElement( impl );
 			id = staticFontId++;
 		}
