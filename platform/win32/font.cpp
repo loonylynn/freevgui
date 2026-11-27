@@ -240,3 +240,11 @@ BaseFontPlat *vgui::FontPlat_CreateSystem( const char *name, int tall, int wide,
 {
 	return FontPlat_Win32::Create( name, tall, wide, rotation, weight, italic, underline, strikeout, symbol );
 }
+
+BaseFontPlat *vgui::FontPlat_CreateFromMemory( const char *, const void *, int,
+	int, int, float, int, bool, bool, bool, bool )
+{
+	// The Win32 backend continues to use GDI for installed system fonts.
+	// Bitmap TGA fonts remain supported on all platforms.
+	return nullptr;
+}
