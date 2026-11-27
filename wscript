@@ -16,6 +16,12 @@ def configure(conf):
 	if conf.env.USE_STATIC_FREEVGUI:
 		conf.env.FREEVGUI_XASH_SUPPORT = True
 
+	# The POSIX backend rasterises game-provided TrueType files with FreeType.
+	# Keep non-desktop POSIX targets on their existing bitmap/stub fallback.
+	if conf.env.DEST_OS in ('linux', 'darwin', 'freebsd', 'openbsd', 'netbsd'):
+		conf.check_pkg('freetype2', 'FREETYPE')
+		conf.env.FREEVGUI_HAVE_FREETYPE = True
+
 # freevgui must match original vgui library name: vgui.so.
 # however, Waf hardcodes -lvgui, failing vgui_support and client link to freevgui
 @feature('fix_freevgui_link')
@@ -40,6 +46,9 @@ def build(bld):
 
 	if platform == 'win32':
 		use += ['GDI32'] # the Win32 font backend rasterises through GDI
+	elif bld.env.FREEVGUI_HAVE_FREETYPE:
+		use += ['FREETYPE']
+		defines += ['VGUI_HAVE_FREETYPE']
 
 	if bld.env.FREEVGUI_XASH_SUPPORT:
 		source += bld.path.ant_glob('platform/xash3d-fwgs/*.cpp')
