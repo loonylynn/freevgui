@@ -217,7 +217,7 @@ private:
 		if( tall <= 0 )
 			tall = 16;
 
-		if( FT_Set_Pixel_Sizes( m_face, (FT_UInt)Q_max( 0, wide ), (FT_UInt)tall ))
+		if( FT_Set_Pixel_Sizes( m_face, (FT_UInt)( wide > 0 ? wide : 0 ), (FT_UInt)tall ))
 			return false;
 
 		m_ascender = FontRound26_6( m_face->size->metrics.ascender );
