@@ -24,6 +24,17 @@ silent or ambiguous, the answer was found by observing the original binary, not
 by copying from another codebase. Nothing is derived from HLSDK headers or from
 the Source SDK.
 
+### Fonts
+
+On POSIX desktop builds, FreeVGUI can rasterise TrueType/OpenType font data supplied to the
+memory-backed `vgui::Font` constructor using FreeType. The font data is copied into the
+platform font object, so the caller may release its original file buffer after construction.
+The existing 32-bit TGA bitmap-font format remains supported and is tried first. Win32
+continues to use its GDI system-font backend.
+
+POSIX desktop builds require the FreeType 2 development package (pkg-config module
+`freetype2`). Other POSIX targets retain their existing fallback behavior.
+
 ### Building
 
 For now, only building as subproject of Xash3D FWGS is supported.
