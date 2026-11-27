@@ -19,7 +19,14 @@ def configure(conf):
 	# The POSIX backend rasterises game-provided TrueType files with FreeType.
 	# Keep non-desktop POSIX targets on their existing bitmap/stub fallback.
 	if conf.env.DEST_OS in ('linux', 'darwin', 'freebsd', 'openbsd', 'netbsd'):
-		conf.check_pkg('freetype2', 'FREETYPE')
+		# Use Waf's standard pkg-config checker. The old check_pkg call is
+		# incompatible with the Waf API bundled by Xash3D FWGS.
+		conf.check_cfg(
+			package = 'freetype2',
+			uselib_store = 'FREETYPE',
+			args = ['--cflags', '--libs'],
+			mandatory = True
+		)
 		conf.env.FREEVGUI_HAVE_FREETYPE = True
 
 # freevgui must match original vgui library name: vgui.so.
