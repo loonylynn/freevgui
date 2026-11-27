@@ -24,6 +24,11 @@ public:
 // platform-specific font implementation
 BaseFontPlat *FontPlat_CreateSystem( const char *name, int tall, int wide, float rotation, int weight, bool italic, bool underline, bool strikeout, bool symbol );
 
+// Create a font from data owned by the caller. Platform implementations may
+// copy the data when the underlying rasterizer needs it for the font lifetime.
+BaseFontPlat *FontPlat_CreateFromMemory( const char *name, const void *data, int dataLength,
+	int tall, int wide, float rotation, int weight, bool italic, bool underline, bool strikeout, bool symbol );
+
 // a font sheet: one TGA holding 256 fixed-size cells side by side, decoded down to one byte of coverage per pixel
 class FontPlat_Bitmap : public BaseFontPlat
 {
