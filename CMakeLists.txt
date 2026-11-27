@@ -55,6 +55,15 @@ if(WIN32)
 	target_link_libraries(vgui PRIVATE gdi32)
 endif()
 
+# POSIX fonts supplied by a game are rasterised from memory with FreeType.
+# Keep the Win32 GDI backend independent of this dependency.
+if(NOT WIN32 AND NOT ANDROID)
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
+	target_compile_definitions(vgui PRIVATE VGUI_HAVE_FREETYPE=1)
+	target_link_libraries(vgui PRIVATE PkgConfig::FREETYPE)
+endif()
+
 if(FREEVGUI_XASH_SUPPORT)
 	target_include_directories(vgui PRIVATE ../engine)
 
